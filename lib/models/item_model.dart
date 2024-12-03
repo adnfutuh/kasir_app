@@ -8,7 +8,7 @@ class Item {
   final double rating;
   final Categories category;
   final double price;
-  final double stock;
+  double stock;
   int quantity;
 
   Item({

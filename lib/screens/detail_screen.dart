@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kasir_app/models/item_model.dart';
-
 import '../cubit/cart_cubit.dart';
+import '../widgets/add_cart.dart';
 
 class DetailScreen extends StatefulWidget {
   final Item item;
@@ -25,7 +25,7 @@ class _DetailScreenState extends State<DetailScreen> {
               clipper: GreyClipper(),
               child: Container(
                 color: Colors.blueGrey,
-                height: 450,
+                height: 440,
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 55),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -226,6 +226,8 @@ class _DetailScreenState extends State<DetailScreen> {
                   const SizedBox(height: 5),
                   Text(
                     widget.item.description,
+                    // maxLines: 4,
+                    // overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.black.withOpacity(0.6),
                       fontWeight: FontWeight.w400,
@@ -237,6 +239,20 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BlocBuilder<CartCubit, List<Item>>(
+        builder: (context, cartState) {
+          final totalItems =
+              cartState.fold(0, (sum, item) => sum + item.quantity);
+          if (totalItems > 0) {
+            return AddCart(
+              selectedQuantity: totalItems,
+              item: cartState,
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       ),
     );
   }

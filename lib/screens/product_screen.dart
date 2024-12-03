@@ -142,24 +142,19 @@ class ProductScreen extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: BlocBuilder<CartCubit, List<Item>>(
-              builder: (context, cartState) {
-                final totalItems =
-                    cartState.fold(0, (sum, item) => sum + item.quantity);
-                return totalItems > 0
-                    ? AddCart(
-                        selectedQuantity: totalItems,
-                        item: cartState,
-                      )
-                    : const SizedBox.shrink();
-              },
-            ),
-          ),
         ],
+      ),
+      bottomNavigationBar: BlocBuilder<CartCubit, List<Item>>(
+        builder: (context, cartState) {
+          final totalItems =
+              cartState.fold(0, (sum, item) => sum + item.quantity);
+          return totalItems > 0
+              ? AddCart(
+                  selectedQuantity: totalItems,
+                  item: cartState,
+                )
+              : const SizedBox.shrink();
+        },
       ),
     );
   }

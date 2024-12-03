@@ -80,9 +80,14 @@ class _CardProductState extends State<CardProduct> {
                             if (isItemInCart) ...[
                               GestureDetector(
                                 onTap: () {
-                                  context
-                                      .read<CartCubit>()
-                                      .decreaseQuantity(widget.item);
+                                  if (existingItem.quantity > 0) {
+                                    context
+                                        .read<CartCubit>()
+                                        .decreaseQuantity(widget.item);
+                                    setState(() {
+                                      widget.item.stock++;
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   height: 30,
@@ -112,7 +117,14 @@ class _CardProductState extends State<CardProduct> {
                             ],
                             GestureDetector(
                               onTap: () {
-                                context.read<CartCubit>().addItem(widget.item);
+                                if (widget.item.stock > 0) {
+                                  context
+                                      .read<CartCubit>()
+                                      .addItem(widget.item);
+                                  setState(() {
+                                    widget.item.stock--;
+                                  });
+                                }
                               },
                               child: Container(
                                 height: 30,
