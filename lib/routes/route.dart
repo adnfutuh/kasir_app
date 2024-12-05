@@ -4,6 +4,7 @@ import 'package:kasir_app/screens/order_screen.dart';
 import 'package:kasir_app/screens/product_screen.dart';
 import 'package:kasir_app/models/dummy.dart';
 import 'package:kasir_app/models/item_model.dart';
+import 'package:kasir_app/widgets/print.dart';
 
 class RoutesConfig {
   static final GoRouter appRouter = GoRouter(
@@ -27,6 +28,10 @@ class RoutesConfig {
       GoRoute(
         path: '/order',
         builder: (context, state) => const OrderScreen(),
+      ),
+      GoRoute(
+        path: '/print',
+        builder: (context, state) => const Print(),
       ),
     ],
   );
