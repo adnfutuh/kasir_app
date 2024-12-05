@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  charset_converter
+  bluetooth_print_plus
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
