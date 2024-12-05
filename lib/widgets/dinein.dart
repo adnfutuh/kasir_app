@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubit/cart_cubit.dart';
 import '../models/item_model.dart';
+import 'payment_info.dart';
 
 class DineInTab extends StatelessWidget {
   const DineInTab({super.key});
@@ -17,35 +18,39 @@ class DineInTab extends StatelessWidget {
         }
 
         return SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF7F7FC),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildTableInfo(),
-                _buildOrdererInfo(),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: _buildItemList(cartItems),
+          child: Stack(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                decoration: const BoxDecoration(
+                  color: Color(0xFFF7F7FC),
                 ),
-                _buildOrderSummary(totalPrice, cartItems),
-              ],
-            ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTableInfo(),
+                    _buildOrdererInfo(),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: _buildItemList(cartItems),
+                    ),
+                    _buildOrderSummary(totalPrice, cartItems, context),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -236,7 +241,8 @@ class DineInTab extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderSummary(double totalPrice, List<Item> cartItems) {
+  Widget _buildOrderSummary(
+      double totalPrice, List<Item> cartItems, BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -264,7 +270,19 @@ class DineInTab extends StatelessWidget {
           _buildSummaryRow('Total', '\$${totalPrice.toStringAsFixed(2)}'),
           const SizedBox(height: 20),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const PaymentInfo(),
+                  );
+                },
+              );
+            },
             child: Container(
               height: 50,
               decoration: BoxDecoration(
